@@ -1,0 +1,11 @@
+# -*- perl -*-
+
+# t/1000_stories.t - check stories endpoint
+
+use Test::Simple tests => 1;
+use Net::Digg;
+
+my $digg = Net::Digg->new();
+my $result = $digg->getUpcomingStoriesByContainer();
+
+ok( $result->{ 'count' } == 10 );
