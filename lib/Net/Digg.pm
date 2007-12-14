@@ -1,6 +1,6 @@
 package Net::Digg;
 $AUTHOR      = 'Kurt Wilms <wilms@cs.umn.edu>';
-$VERSION     = 0.1;
+$VERSION     = 0.11;
 use warnings;
 use strict;
 
@@ -14,29 +14,29 @@ Net::Digg - Quickly consume and interface with the Digg API.
 =head1 SYNOPSIS
 
 
-use Net::Digg;
+    use Net::Digg;
 
-my $digg = Net::Digg->new();
+    my $digg = Net::Digg->new();
 
-# Print the user that submitted the latest upcoming story.
+    # Print the user that submitted the latest upcoming story.
 
-my $result = $digg->get_upcoming_stories();
+    my $result = $digg->get_upcoming_stories();
 
-print $result->{ 'stories' }[0]->{'title'};
+    print $result->{ 'stories' }[0]->{'title'};
 
-# Print the titles of the twenty latest popular stories
+   # Print the titles of the twenty latest popular stories
 
-my %params = ('count' => 20);
+    my %params = ('count' => 20);
 
-$result = $digg->get_popular_stories(\%params);
+    $result = $digg->get_popular_stories(\%params);
 
-my $stories = $result->{'stories'};
+    my $stories = $result->{'stories'};
 
-foreach $story (@$stories) {
+    foreach $story (@$stories) {
 
-    print $story->{'title'} . "\n";
+        print $story->{'title'} . "\n";
 
-}
+    }
 
 See also FUNCTIONS, DESCRIPTION, and EXAMPLES below.
 
@@ -1787,6 +1787,112 @@ sub get_galleryphoto_comment_replies_by_photoid_commentid {
     my $commentid = shift;
     my $queryargs = shift;
     my $url = $self->{apiurl} . "/" . "galleryphoto" . "/" . $photoid . "/comment" . "/" .$commentid . "/replies";
+    $url .= $self->handle_args($queryargs);
+    my $req = $self->{ua}->get($url);
+    return ($req->is_success) ?  JSON::Any->jsonToObj($req->content) : undef;
+}
+
+=pod
+
+=head2 get_media (\%params)
+
+Given
+
+=over
+
+=item 0 a map of optional API query arguments.
+
+=back
+
+Get a list of all media.
+
+=cut
+
+sub get_media {
+    my $self = shift;
+    my $queryargs = shift;
+    my $url = $self->{apiurl} . "/" . "media";
+    $url .= $self->handle_args($queryargs);
+    my $req = $self->{ua}->get($url);
+    return ($req->is_success) ?  JSON::Any->jsonToObj($req->content) : undef;
+}
+
+=pod
+
+=head2 get_media_by_name ($short_name, \%params)
+
+Given
+
+=over
+
+=item 0 the medium short_name
+
+=item 0 a map of optional API query arguments.
+
+=back
+
+Get a specified medium.
+
+=cut
+
+sub get_media_by_name {
+    my $self = shift;
+    my $short_name = shift;
+    my $queryargs = shift;
+    my $url = $self->{apiurl} . "/" . "medium" . "/" . $short_name;
+    $url .= $self->handle_args($queryargs);
+    my $req = $self->{ua}->get($url);
+    return ($req->is_success) ?  JSON::Any->jsonToObj($req->content) : undef;
+}
+
+=pod
+
+=head2 get_containers (\%params)
+
+Given
+
+=over
+
+=item 0 a map of optional API query arguments.
+
+=back
+
+Get a list of all containers.
+
+=cut
+
+sub get_containers {
+    my $self = shift;
+    my $queryargs = shift;
+    my $url = $self->{apiurl} . "/" . "containers";
+    $url .= $self->handle_args($queryargs);
+    my $req = $self->{ua}->get($url);
+    return ($req->is_success) ?  JSON::Any->jsonToObj($req->content) : undef;
+}
+
+=pod
+
+=head2 get_container_by_name ($short_name, \%params)
+
+Given
+
+=over
+
+=item 0 the container short_name
+
+=item 0 a map of optional API query arguments.
+
+=back
+
+Get a specified container.
+
+=cut
+
+sub get_container_by_name {
+    my $self = shift;
+    my $short_name = shift;
+    my $queryargs = shift;
+    my $url = $self->{apiurl} . "/" . "container" . "/" . $short_name;
     $url .= $self->handle_args($queryargs);
     my $req = $self->{ua}->get($url);
     return ($req->is_success) ?  JSON::Any->jsonToObj($req->content) : undef;

@@ -2,29 +2,29 @@ NAME
     Net::Digg - Quickly consume and interface with the Digg API.
 
 SYNOPSIS
-    use Net::Digg;
+        use Net::Digg;
 
-    my $digg = Net::Digg->new();
+        my $digg = Net::Digg->new();
 
-    # Print the user that submitted the latest upcoming story.
+        # Print the user that submitted the latest upcoming story.
 
-    my $result = $digg->get_upcoming_stories();
+        my $result = $digg->get_upcoming_stories();
 
-    print $result->{ 'stories' }[0]->{'title'};
+        print $result->{ 'stories' }[0]->{'title'};
 
-    # Print the titles of the twenty latest popular stories
+       # Print the titles of the twenty latest popular stories
 
-    my %params = ('count' => 20);
+        my %params = ('count' => 20);
 
-    $result = $digg->get_popular_stories(\%params);
+        $result = $digg->get_popular_stories(\%params);
 
-    my $stories = $result->{'stories'};
+        my $stories = $result->{'stories'};
 
-    foreach $story (@$stories) {
+        foreach $story (@$stories) {
 
-        print $story->{'title'} . "\n";
+            print $story->{'title'} . "\n";
 
-    }
+        }
 
     See also FUNCTIONS, DESCRIPTION, and EXAMPLES below.
 
@@ -524,6 +524,36 @@ FUNCTIONS
 
     Get one level of replies to one comment for a given gallery photo.
 
+  get_media (\%params)
+    Given
+
+    0 a map of optional API query arguments.
+
+    Get a list of all media.
+
+  get_media_by_name ($short_name, \%params)
+    Given
+
+    0 the medium short_name
+    0 a map of optional API query arguments.
+
+    Get a specified medium.
+
+  get_containers (\%params)
+    Given
+
+    0 a map of optional API query arguments.
+
+    Get a list of all containers.
+
+  get_container_by_name ($short_name, \%params)
+    Given
+
+    0 the container short_name
+    0 a map of optional API query arguments.
+
+    Get a specified container.
+
   handle_args (\%params)
     Given
 
@@ -567,7 +597,7 @@ BUGS AND LIMITATIONS
     <http://rt.cpan.org>.
 
 VERSION
-    This document describes Net::Digg version 0.1.
+    This document describes Net::Digg version 0.11.
 
 AUTHOR
      Kurt Wilms
